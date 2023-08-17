@@ -1,5 +1,5 @@
 import {createStore} from "vuex"
-
+import { CHANGE_INFO } from "./mutation_type"
 const store = createStore({
     state: () => ({
         counter:198,
@@ -37,11 +37,35 @@ const store = createStore({
     },
 
     mutations:{
+        //原则不要在mutations执行 异步操作
         counterAdd(state){
             state.counter++
+        },
+        changeBtn(state,payload){
+            state.name = payload
+        },
+        // [CHANGE_INFO](state,payload){
+        //     state.name = payload.name,
+        //     state.level = payload.level
+        // },
+        changeInfo(state,payload){
+            state.name = payload.name,
+            state.level = payload.level
         }
        
+    },
+    //action对比mutation，不同于  action提交的是mutation，而不是直接变更状态 而action可以包含任意异步操作
+    actions:{
+        counterAddAction(context){
+            // console.log(context.commit)//用于提交mutation
+
+            context.commit("counterAdd")
+        },
+        changeBtnAction(context,payload){
+
+            context.commit("changeBtn",payload)
+        }
     }
-})
+}) 
 
 export default store
