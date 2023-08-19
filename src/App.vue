@@ -6,7 +6,8 @@
     <!-- <home-getter></home-getter> -->
     <!-- <HomeMuation></HomeMuation> -->
     <!-- <HomeAction></HomeAction> -->
-    <HomeActionPlus></HomeActionPlus>
+    <!-- <HomeActionPlus></HomeActionPlus> -->
+    <HomePageModule></HomePageModule>
 </template>
 <script setup>
     import HomePage from "./components/HomePage.vue"
@@ -14,6 +15,7 @@
     import HomeMuation from "./components/HomeMutation.vue"
     import HomeAction from "./components/HomeAction.vue"
     import HomeActionPlus from "./components/HomeActionPlus.vue"
+    import HomePageModule from "./components/HomePageModules.vue"
     import { useStore} from "vuex"
 
 </script>
