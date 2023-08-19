@@ -2,6 +2,7 @@ import {createStore} from "vuex"
 import { CHANGE_INFO } from "./mutation_type"
 const store = createStore({
     state: () => ({
+        //模拟的数据
         counter:198,
         name:"yjh",
         level:100,
@@ -10,7 +11,10 @@ const store = createStore({
             {id:111,name: "yjh1",age: 20},
             {id:112,name: "yjh2",age: 22},
             {id:113,name: "yjh3",age: 23},
-        ]
+        ],
+        // 接受来自fetch的网络请求数据
+        banners:[],
+        recommends:[]
     }),
     getters: {
         doubleCounter(state){
@@ -35,7 +39,7 @@ const store = createStore({
             }
         }
     },
-
+    //修改数据必须用mutations
     mutations:{
         //原则不要在mutations执行 异步操作
         counterAdd(state){
@@ -51,6 +55,9 @@ const store = createStore({
         changeInfo(state,payload){
             state.name = payload.name,
             state.level = payload.level
+        },
+        changeBanners(state , getBanners){
+            state.banners = getBanners
         }
        
     },
@@ -64,6 +71,32 @@ const store = createStore({
         changeBtnAction(context,payload){
 
             context.commit("changeBtn",payload)
+        },
+        // await的使用 必须是异步函数  所以使用 async 声明一个异步函数
+        // 使用 await 等待异步操作完成并返回结果
+        async fetchHomeMultidataAction(context){
+            //方法1
+            //给 Promise 设置then
+            // fetch("http://123.207.32.32:8000/home/multidata").then(res =>{
+            //     res.json().then(data => {
+            //         console.log(data);
+            //     })
+            // })
+            //方法2  
+            //Promise的链式调用
+            // fetch("http://123.207.32.32:8000/home/multidata").then(res => {
+            //     return res.json()
+            // }).then(data => {
+            //     console.log(data)
+            // })
+            //方法3
+            //await/async  promise 语法糖
+            const res = await fetch("http://123.207.32.32:8000/home/multidata")
+            const data = await res.json()
+            // console.log(data)
+            //修改state数据
+            context.commit("changeBanners",data.data.banner.list)
+
         }
     }
 }) 
